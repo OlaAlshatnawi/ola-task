@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>FX Deals | Made By Ola</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="nav">
+                <h1 class="righteous-regular text_xl" >FX Deals</h1>
+            </div>
+        </div>
+
+        <main>
+            <section class="centered-section">
+                <div class="container">
+                    <form id="dataForm">
+                        <div style="padding-left: 50px;">
+                            <div class="side">
+                                <p>From Currency</p>
+                                <div class="select-container">
+                                    <select id="from" class="select"></select>
+                                </div>
+                            </div>
+        
+                            <div class="side">
+                                <p>To Currency</p>
+                                <div class="select-container select">
+                                    <select id="to" class="select"></select>
+                                </div>
+                            </div>    
+                        </div>
+                        
+                        <div>
+                            </br>
+                            <input type="number" id="numberInput" name="quantity" min="1" max="999999999" placeholder="Amount" step="0.01">
+                        </div>   
+                        
+                        </br>
+                        <input id="submit" type="submit" class="btn btn_cool center" value="Send Request"/>
+                        <input type="hidden" id="timestamp" name="timestamp">
+                    </form>
+                </div>
+            </section>
+        </main>
+
+    </body>
+
+    <footer>
+        <div class="container">
+            <div class="footer">
+                <div>
+                    <p class="text_bold footer_name">
+                        Made By Ola Alshatnawi
+                    </p>
+                    <p class="footer_rights">
+                        <small class="text_s">
+                            FX Deals A ProgressSoft Task
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const selectFrom = document.getElementById("from");
+        const selectTo = document.getElementById("to")
+
+        const options = ["AED","AFN","ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP",
+                        "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS",
+                        "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF",
+                        "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRU", "MUR", "MVR",
+                        "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD",
+                        "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLE", "SOS", "SRD", "SSP", "STN", "SVC", "SYP", "SZL", "THB", "TJS", "TMT", "TND",
+                        "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "UYI", "UYU", "UZS", "VED", "VEF", "VND", "VUV", "WST", "XAF", "XCD", "XDR", "XOF",
+                        "XPF", "XSU", "XUA", "YER", "ZAR", "ZMW", "ZWL"];
+
+        options.forEach(function(optionText) {
+            const option = document.createElement("option");
+            option.text = optionText;
+            selectTo.add(option);
+        });
+        options.forEach(function(optionText) {
+            const option = document.createElement("option");
+            option.text = optionText;
+            selectFrom.add(option);
+        });
+    </script>
+
+    <script>
+        document.getElementById("dataForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+            const data = {
+                fromCurrencyIso: document.getElementById("from").value,
+                toCurrencyIso: document.getElementById("to").value,
+                dealTimestamp: timestamp,
+                dealAmount: document.getElementById("numberInput").value
+            };
+            
+            console.log(data);
+
+            fetch('http://localhost:8083/deals', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.text())
+                .then(message => {
+                    alert(message);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</html>
+
+<style>
+    :root {
+        --primary: #5dbac5;
+        --dark-blue: #2d2d2d;
+        --gray: #999999;
+        --gap: 80px;
+        --text-color: white;
+        --gray-light: #bdbdbd;
+        --black: #232020;
+
+    }
+    * {
+        box-sizing:border-box
+    }
+    html {
+        background-color:var(--dark-blue);
+        color:var(--text-color)
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            scroll-behavior:smooth
+        }
+    }
+    body {
+        margin:0;
+        font-family:Poppins,sans-serif
+    }
+    input,
+    button,
+    select {
+        font:inherit
+    }
+    ::selection {
+        background-color:var(--primary);
+        color:var(--black)
+    }
+    @media (max-width: 37.5rem) {
+        :root {
+            --gap: 30px
+        }
+        html {
+            font-size:70%
+        }
+    }
+    p {
+        color:var(--gray-light)
+    }
+    .container {
+        max-width:960px;
+        padding-inline:20px;
+        margin-inline:auto;
+        position: relative;
+    }
+    .text_xl {
+        font-size:3rem;
+        font-weight:300;
+        margin-bottom: -75px;
+    }
+    .text_bold {
+        font-size:1.13rem;
+        font-weight:600;
+        line-height:1.77
+    }
+    .text_s {
+        font-size:1rem;
+        font-weight:400;
+        line-height:1.77
+    }
+    .btn {
+        all:unset;
+        outline:revert;
+        box-sizing:border-box;
+        display:inline-block;
+        cursor:pointer;
+        font-size:.88rem;
+        line-height:1.5;
+        letter-spacing:2px;
+        font-weight:600;
+        text-transform:uppercase;
+        transition:translate .18s,opacity .18s;
+        opacity:.8
+    }
+    .btn:hover {
+        opacity:1
+    }
+    .btn:active {
+        translate:1px 1px
+    }
+    .btn_cool {
+        background-color:var(--primary);
+        color: #FFFFFF;
+        text-align: center;
+        padding:12px 12px 35px 12px;
+        background-repeat:no-repeat;
+        background-position:right 20px center
+    }
+    .nav {
+        padding-block:25px;
+        display:flex;
+        justify-content:center;
+        align-items:center
+    }
+    @media (max-width: 48.5rem) {
+        .nav_list li:not(:last-child) {
+            display:none
+        }
+    }
+    footer {
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+    }
+    .footer {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .footer_name {
+        margin-bottom:0
+    }
+    .footer_rights {
+        margin-top:0
+    }
+    @media (max-width: 37.5rem) {
+        .footer {
+            flex-direction:column
+        }
+    }
+    .centered-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 200px;
+    }
+    .side {
+        display: inline-block;
+        margin-right: 50px;
+    }
+    .select-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .righteous-regular {
+        font-family: "Righteous", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        color: #61b9ab;
+    }
+    #from, #to {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .select {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        font-size: 16px;
+        color: #232020;
+        width: 220px;
+        height: 40px;
+    }
+    .select:hover {
+        background-color: #777e7d;
+    }
+    #numberInput {
+        width: 200px;
+        height: 40px;
+        font-size: 16px;
+        margin: 20px auto;
+        display: block;
+    }
+    #submit {
+        width: 200px;
+        height: 40px;
+        font-size: 16px;
+        margin: 0px auto;
+        display: block;
+    }
+</style>

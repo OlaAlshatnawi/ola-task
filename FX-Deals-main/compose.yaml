@@ -1,0 +1,18 @@
+version: "3.2"
+services:
+  fxdeals:
+    build: .
+    ports:
+      - 8083:8085
+    depends_on:
+      - mysql
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=doc
+  mysql:
+    image: mysql
+    ports:
+      - 12345:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=root
